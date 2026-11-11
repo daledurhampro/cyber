@@ -1,0 +1,55 @@
+# Git
+.git
+.gitignore
+
+# Environment files
+.env
+.env.*
+
+# Node.js
+frontend/node_modules
+frontend/.next
+frontend/out
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+backend/__pycache__
+backend/.venv
+backend/.pytest_cache
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+__pycache__
+*.py[cod]
+*$py.class
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Docker
+# (Dockerfile and .dockerignore must NOT be ignored: the Terraform docker
+#  provider sends the context as-is and the daemon needs the Dockerfile)
+docker-compose*
+
+# Documentation
+README.md
+*.md
+
+# Development tools
+.eslintrc*
+.prettierrc*
+
+week3/
+terraform/
