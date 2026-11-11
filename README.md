@@ -2,33 +2,7 @@
 
 An AI agent that reviews source code for security vulnerabilities. It combines **Semgrep** static analysis (called through an **MCP server**) with an **OpenAI** model's own review, and returns a structured report with CVSS scores and suggested fixes.
 
-![Cybersecurity Analyzer](assets/cyber.png)
-
 You can run it locally, as a single Docker container, on **Azure Container Apps**, or on **Google Cloud Run**.
-
----
-
-## Architecture
-
-```mermaid
-flowchart LR
-    U[Browser] -->|paste or upload code| FE[Next.js UI<br/>static export]
-    FE -->|POST /api/analyze| API[FastAPI backend]
-    API --> AG[OpenAI Agents SDK<br/>Security Researcher agent<br/>gpt-4.1-mini]
-    AG <-->|MCP over stdio| MCP[Semgrep MCP server<br/>semgrep mcp]
-    MCP --> SG[(Semgrep rules<br/>config: auto)]
-    AG -->|SecurityReport JSON| API
-    API -->|sorted by CVSS| FE
-```
-
-| Layer | Tech | Location |
-|---|---|---|
-| Frontend | Next.js + React + TypeScript + Tailwind, built as a static export | [frontend/](frontend/) |
-| Backend | FastAPI (Python 3.12, managed with `uv`) | [backend/server.py](backend/server.py) |
-| Agent | OpenAI Agents SDK, model `gpt-4.1-mini` | [backend/server.py](backend/server.py), [backend/context.py](backend/context.py) |
-| Tools | Semgrep MCP server over stdio | [backend/mcp_servers.py](backend/mcp_servers.py) |
-| Container | Multi-stage Dockerfile (Node build → Python runtime) | [Dockerfile](Dockerfile) |
-| Infrastructure | Terraform with Azure and GCP configs | [terraform/](terraform/) |
 
 In production a single container serves both parts on port **8000**: FastAPI handles `/api/*` and `/health`, and serves the Next.js static export for every other path. You get one image, one port, no CORS setup and no separate web server.
 
