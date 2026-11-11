@@ -137,6 +137,27 @@ docker logs -f cyber-analyzer   # follow logs
 docker stop cyber-analyzer      # stop (the container is removed because of --rm)
 ```
 
+## Run the tests
+
+The unit tests don't need API keys or network access. The OpenAI agent runner, the Semgrep MCP server and tracing are all mocked, so nothing is sent to OpenAI or Semgrep, even if `.env` holds real keys.
+
+**Backend** ([pytest](https://docs.pytest.org/), in [backend/tests/](backend/tests/)):
+```bash
+cd backend
+uv run pytest           # add -v for one line per test
+```
+These cover request validation, the API-key check, agent and MCP server configuration, sorting issues by CVSS score, creating and deleting the temp file (including when the analysis fails), and the `/health` and `/api/analyze` endpoints (success, 400, 422 and 500 responses).
+
+**Frontend** ([Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/docs/react-testing-library/intro/), in [frontend/tests/](frontend/tests/)):
+```bash
+cd frontend
+npm install             # first time only
+npm test                # single run; use `npm run test:watch` while developing
+```
+These cover each component (empty, analyzing, error and results states, severity badge colours, button enable/disable, file upload, the progress stages and elapsed-time format) and the main page's flow end to end, with `fetch` mocked: upload a file, `POST /api/analyze`, show the results or an error.
+
+The tests and dev-only dependencies aren't included in the Docker image. `.dockerignore` excludes the test folders, and the Dockerfile runs `uv sync --no-dev`.
+
 ---
 
 ## Deploy to Azure (Container Apps)
@@ -237,7 +258,9 @@ Terraform enables the required APIs, creates an **Artifact Registry** repository
 ```
 .
 ├── backend/            FastAPI app, agent, prompts, MCP config (uv project)
+│   └── tests/          pytest unit tests
 ├── frontend/           Next.js UI (static export)
+│   └── tests/          Vitest + Testing Library unit tests
 ├── terraform/
 │   ├── azure/          Container Apps + ACR + Log Analytics
 │   └── gcp/            Cloud Run + Artifact Registry

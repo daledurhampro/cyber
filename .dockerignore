@@ -18,6 +18,9 @@ yarn-error.log*
 backend/__pycache__
 backend/.venv
 backend/.pytest_cache
+backend/tests
+frontend/tests
+frontend/vitest.config.mts
 backend/*.pyc
 backend/*.pyo
 backend/*.pyd

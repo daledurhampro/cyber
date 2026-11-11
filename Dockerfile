@@ -20,7 +20,7 @@ RUN pip install uv
 
 # Copy Python dependencies and install
 COPY backend/pyproject.toml backend/uv.lock* ./
-RUN uv sync --frozen
+RUN uv sync --frozen --no-dev
 RUN uv tool install semgrep
 # Copy backend source
 COPY backend/ ./
