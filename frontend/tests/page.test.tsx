@@ -8,7 +8,12 @@ const CODE = 'import os\nos.system(input())';
 async function uploadCode(content = CODE, name = 'app.py') {
   const file = new File([content], name, { type: 'text/x-python' });
   await userEvent.upload(screen.getByLabelText('Open code file...'), file);
-  await waitFor(() => expect(screen.getByLabelText('Code to analyze')).toHaveValue(content));
+  await waitFor(() => {
+    const codeView = screen.getByRole('region', { name: 'Code to analyze' });
+    for (const line of content.split('\n')) {
+      expect(codeView).toHaveTextContent(line);
+    }
+  });
 }
 
 describe('Home page', () => {

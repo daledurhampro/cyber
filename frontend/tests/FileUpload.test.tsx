@@ -5,14 +5,17 @@ import FileUpload from '@/components/FileUpload';
 import { FileUploadProps } from '@/types/security';
 
 function setup(overrides: Partial<FileUploadProps> = {}) {
-  const props: FileUploadProps = {
+  const defaults: FileUploadProps = {
     fileName: '',
     onFileUpload: vi.fn(),
+    onLoadSample: vi.fn(),
     onAnalyzeCode: vi.fn(),
     isAnalyzing: false,
     hasCode: true,
-    ...overrides,
   };
+  // Object.assign types as FileUploadProps & Partial<FileUploadProps>, so
+  // required props stay required even under stricter optional-spread checks.
+  const props: FileUploadProps = Object.assign({}, defaults, overrides);
   render(<FileUpload {...props} />);
   return props;
 }
