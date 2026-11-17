@@ -19,6 +19,7 @@ export interface AnalysisResponse {
 export interface FileUploadProps {
   fileName: string;
   onFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onLoadSample: () => void;
   onAnalyzeCode: () => void;
   isAnalyzing: boolean;
   hasCode: boolean;
@@ -28,6 +29,7 @@ export interface CodeInputProps {
   codeContent: string;
   fileName: string;
   onFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onLoadSample: () => void;
   onAnalyzeCode: () => void;
   isAnalyzing: boolean;
 }

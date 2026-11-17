@@ -12,6 +12,11 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ||
     ? 'http://localhost:8000' 
     : '');
 
+// Intentionally vulnerable sample, served from frontend/public by the Next.js
+// dev server and by FastAPI's static mount in production.
+const SAMPLE_FILE_NAME = 'issues.py';
+const SAMPLE_FILE_PATH = `/${SAMPLE_FILE_NAME}`;
+
 
 /**
  * Main application page for cybersecurity code analysis
@@ -37,6 +42,24 @@ export default function Home() {
       reader.readAsText(file);
     } else {
       alert('Please select a code file');
+    }
+  };
+
+  const handleLoadSample = async () => {
+    try {
+      const response = await fetch(SAMPLE_FILE_PATH);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const content = await response.text();
+      setFileName(SAMPLE_FILE_NAME);
+      setCodeContent(content);
+      setAnalysisResults(null);
+      setError(null);
+    } catch (err) {
+      setError(
+        `Could not load sample file: ${err instanceof Error ? err.message : 'unknown error'}`,
+      );
     }
   };
 
@@ -84,6 +107,7 @@ export default function Home() {
             codeContent={codeContent}
             fileName={fileName}
             onFileUpload={handleFileUpload}
+            onLoadSample={handleLoadSample}
             onAnalyzeCode={handleAnalyzeCode}
             isAnalyzing={isAnalyzing}
           />

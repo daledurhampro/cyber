@@ -8,6 +8,7 @@ export default function CodeInput({
   codeContent,
   fileName,
   onFileUpload,
+  onLoadSample,
   onAnalyzeCode,
   isAnalyzing
 }: CodeInputProps) {
@@ -21,6 +22,7 @@ export default function CodeInput({
         <FileUpload
           fileName={fileName}
           onFileUpload={onFileUpload}
+          onLoadSample={onLoadSample}
           onAnalyzeCode={onAnalyzeCode}
           isAnalyzing={isAnalyzing}
           hasCode={!!codeContent}
