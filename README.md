@@ -8,7 +8,7 @@ In production a single container serves both parts on port **8000**: FastAPI han
 
 ### Request workflow
 
-1. The user pastes code or uploads a file in the UI, which sends it to `POST /api/analyze`.
+1. The user uploads a file in the UI, which sends it to `POST /api/analyze`.
 2. The backend checks the request and the API key, then writes the code to a **temporary `.py` file** so Semgrep has a real path to scan.
 3. It starts the **Semgrep MCP server** as a subprocess (`semgrep mcp`) and creates the **Security Researcher** agent with that server attached.
 4. The agent calls `semgrep_scan` **once** with `config: "auto"`, reviews the findings, and then runs its own review to find issues Semgrep missed.
