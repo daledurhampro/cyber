@@ -60,7 +60,7 @@ Semgrep is connected to the agent through an **MCP server** (`MCPServerStdio`) i
 - A **static tool filter** exposes only `semgrep_scan`, so the model can't wander into Semgrep's other tools.
 - `client_session_timeout_seconds=240` gives the scan time to load the rule registry, which is slow on a cold start.
 
-### Prompt engineering
+### Context engineering
 [backend/context.py](backend/context.py) holds the system prompt. It sets firm limits to keep runs fast and predictable:
 - Use `config: "auto"` and nothing else (the model otherwise tends to invent rule-set names).
 - Call `semgrep_scan` **once**, and don't repeat it.
